@@ -1,65 +1,67 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import { ProLayout, PageContainer, DefaultFooter } from '@ant-design/pro-layout';
+import { Button, Result } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
+
+const BasicLayout = () => {
+  const [pathname, setPathname] = useState('/welcome');
+
+  // Cấu hình menu (Thường sẽ được truyền từ router)
+  const menuData = [
+    {
+      path: '/welcome',
+      name: 'Welcome',
+      icon: <SmileOutlined />,
+    },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <div style={{ height: '100vh' }}>
+      <ProLayout
+        title="Ant Design Pro"
+        logo="https://alipayobjects.com"
+        location={{ pathname }}
+        route={{
+          path: '/',
+          routes: menuData,
+        }}
+        menuItemRender={(item, dom) => (
+          <a onClick={() => setPathname(item.path ?? '/')}>{dom}</a>
+        )}
+        // Tùy chỉnh Footer
+        footerRender={() => (
+          <DefaultFooter
+            copyright="2026 Ant Design Pro"
+            links={[
+              {
+                key: 'Ant Design',
+                title: 'Ant Design',
+                href: 'https://ant.design',
+                blankTarget: true,
+              },
+            ]}
+          />
+        )}
+      >
+        {/* Vùng chứa nội dung chính, tự động căn chỉnh và có breadcrumb */}
+        <PageContainer
+          header={{
+            title: 'Tiêu đề trang',
+          }}
+        >
+          <div style={{ minHeight: '600px', backgroundColor: '#fff', padding: 24 }}>
+            <Result
+              icon={<SmileOutlined />}
+              title="Chào mừng bạn đến với ProLayout!"
+              extra={<Button type="primary">Hành động</Button>}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          </div>
+        </PageContainer>
+      </ProLayout>
     </div>
   );
-}
+};
+
+export default BasicLayout;
